@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sdyu.blog.myblog01.mapper.ReplyMapper">
+    <resultMap id="BaseResultMap" type="com.sdyu.blog.myblog01.entity.Reply">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="comment_id" jdbcType="INTEGER" property="commentId" />
+        <result column="create" jdbcType="DATE" property="create" />
+        <result column="ip" jdbcType="VARCHAR" property="ip" />
+        <result column="author" jdbcType="VARCHAR" property="author" />
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.sdyu.blog.myblog01.entity.Reply">
+        <result column="content" jdbcType="LONGVARCHAR" property="content" />
+    </resultMap>
+    <insert id="insert" parameterType="com.sdyu.blog.myblog01.entity.Reply">
+        insert into t_reply (`comment_id`, `create`, `ip`, `content`, `author`)
+        values (#{commentId,jdbcType=INTEGER},#{create,jdbcType=DATE},#{ip,jdbcType=VARCHAR},#{content,jdbcType=LONGVARCHAR},#{author,jdbcType=VARCHAR});
+    </insert>
+    <delete id="deleteReply">
+        delete from t_reply where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <select id="selectByCid" resultMap="ResultMapWithBLOBs">
+        select * from t_reply where comment_id = #{cid,jdbcType=INTEGER} order by id desc
+    </select>
+    <select id="selectAllReply" resultType="com.sdyu.blog.myblog01.entity.Reply">
+        select * from t_reply order by id desc
+    </select>
+</mapper>
